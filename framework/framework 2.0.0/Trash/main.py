@@ -1,0 +1,39 @@
+from __future__ import annotations
+
+from framework.globals import internal as inal
+import sys
+from PySide6.QtWidgets import QMainWindow, QApplication, QPushButton, QLabel
+
+
+@inal.Object
+class MyWindow(QMainWindow):
+    def __init__(self, label: QLabel):
+        super().__init__()
+        self.setStyleSheet("background-color: black")
+        self.show()
+        
+        self.label = label
+    
+    def mousePressEvent(self, event):
+        print(self.label.text())
+        return super().mousePressEvent(event)
+
+
+@inal.Object
+class MLabel(QLabel):
+    def __init__(self, text: str, parent=None):
+        super().__init__(text, parent)
+
+
+if __name__ == "__main__":
+    app = QApplication(sys.argv)
+    exit_b = QPushButton("Quit")
+    exit_b.pressed.connect(app.quit)
+    exit_b.show()
+    
+    w = inal.new(MyWindow)
+    l = inal.new(MLabel)
+    w(l)
+    l("Bonjour", w)
+
+    sys.exit(app.exec())

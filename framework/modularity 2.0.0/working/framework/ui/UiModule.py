@@ -1,0 +1,52 @@
+from __future__ import annotations
+
+from framework.globals.modularity import ModuleSetup, ioc
+from framework.globals.IApplication import IApplication
+from .internal.UiEngine import UiEngine
+
+from typing import override
+
+
+class UiModule(ModuleSetup):
+    @override
+    @staticmethod
+    def moduleName() -> str:
+        return "ui"
+
+    @override
+    def registerExports(self) -> None:
+        self.__uiengine = UiEngine()
+        ioc().registerExport(self.moduleName(), self.__uiengine)
+
+    @override
+    def resolveImports(self) -> None:
+        ...
+
+    @override
+    def registerApi(self) -> None:
+        ...
+
+    @override
+    def registerResources(self) -> None:
+        ... 
+
+    @override
+    def registerUiTypes(self) -> None:
+        ...
+
+    @override
+    def onPreInit(self, mode: IApplication.RunMode) -> None:
+        ...
+
+    @override
+    def onInit(self, mode: IApplication.RunMode) -> None:
+        ...
+
+    @override
+    def onAllInited(self, mode: IApplication.RunMode) -> None:
+        self.__uiengine.init()
+
+    @override
+    def onDeinit(self) -> None:
+        ...
+
